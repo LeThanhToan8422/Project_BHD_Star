@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "@expo/vector-icons/FontAwesome5";
 import { Checkbox, RadioButton } from "react-native-paper";

@@ -6,26 +6,43 @@ import {
   View,
   ImageBackground,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import DatePicker from "react-native-modern-datepicker";
 import Toast from "react-native-toast-message";
 import axios from "axios";
+import { Ionicons } from "@expo/vector-icons";
 
-const Register = ({navigation}) => {
+const FormUpdateUser = ({route, navigation}) => {
+  const [userID, setUserID] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("Ngày Sinh...");
-  const [gender, setGender] = useState(true);
+  const [gender, setGender] = useState("true");
   const [openDate, setOpenDate] = useState(false);
 
-  let handlePressRegister = async () => {
-    let dataUserID = await axios.get("http://10.0.2.2:8080/api/user/get-userID")
-    let userID = `US${dataUserID.data.userID + 1}`
-    let data = await axios.post(
-      "http://10.0.2.2:8080/api/user/post-user",
+  useEffect(() => {
+    let apiGetUser = async() => {
+      let data = await axios.post("http://10.0.2.2:8080/api/user/get-user-by-id", {id : route.params.userID})
+      setUserID(data.data.user.userID)
+      setEmail(data.data.user.email)
+      setName(data.data.user.name)
+      setPhone(data.data.user.phone)
+      setDateOfBirth(data.data.user.dateOfBirth.slice(0,10))
+      setGender(data.data.user.gender+"")
+    }
+    apiGetUser()
+  },[JSON.stringify(route.params.userID)])
+
+  let handleChangeGender = (value) => {
+    setGender(value)
+  }
+
+  let handlePressUpdate = async () => {
+    let data = await axios.put(
+      "http://10.0.2.2:8080/api/user/put-user",
       {
         id : userID,
         email: email,
@@ -35,39 +52,19 @@ const Register = ({navigation}) => {
         gender : gender === "true" ? true : false
       }
     );
-    if(data.data.isInsert){
-      let dataAccountID = await axios.get("http://10.0.2.2:8080/api/account/get-accountID")
-      let accountID = `AC${dataAccountID.data.accountID + 1}`
-      let data = await axios.post(
-        "http://10.0.2.2:8080/api/account/post-account",
-        {
-          id : accountID,
-          email: email,
-          password : password,
-          userID : userID,
-        }
-      );
-      if(data.data.isInsert){
-        Toast.show({
-          type: "success",
-          text1: "Đăng Ký Thành Công!!!",
-          text2: "Vui Lòng Đăng Nhập BHD Star👋",
-        });
-        navigation.navigate("Login");
-      }
-      else{
-        Toast.show({
-          type: "error",
-          text1: "Đăng Ký Thất Bại!!!",
-          text2: "Thông Tin Đăng Ký Không Chính Xác👋",
-        });
-      }
+    if(data.data.isUpdate){
+      Toast.show({
+        type: "success",
+        text1: "Cập Nhật Thành Công!!!",
+        text2: "Chúc Mừng Bạn Đã Cập Nhật Thông Tin Thành Công👋",
+      });
+      navigation.goBack()
     }
     else {
       Toast.show({
         type: "error",
-        text1: "Đăng Ký Thất Bại!!!",
-        text2: "Thông Tin Đăng Ký Không Chính Xác👋",
+        text1: "Cập Nhật Thất Bại!!!",
+        text2: "Bạn Đã Cập Nhật Thông Tin Thất Bại👋",
       });
     }
     
@@ -79,20 +76,22 @@ const Register = ({navigation}) => {
       style={styles.container}
     >
       <View style={styles.formLogin}>
-        <Text style={{ fontSize: 35, fontWeight: "bold", color : 'white', marginBottom : 20 }}>ĐĂNG KÝ</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}
+        style={{
+            position : 'absolute',
+            top : 10,
+            left : 20,
+          }}>
+          <Ionicons name="chevron-back-circle-outline" size={40} style={{color : 'white'}}/>
+        </TouchableOpacity>
+        <Text style={{ fontSize: 25, fontWeight: "bold", color : 'white', marginBottom : 20 }}>Edit/Update</Text>
         <View style={styles.formContainer}>
           <TextInput
+            editable={false}
             style={styles.formInput}
             placeholder="Nhập Email..."
             value={email}
             onChangeText={setEmail}
-          />
-          <TextInput
-            style={styles.formInput}
-            placeholder="Nhập Password..."
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
           />
           <TextInput
             style={styles.formInput}
@@ -128,7 +127,7 @@ const Register = ({navigation}) => {
           <View style={styles.viewSelectGender}>
             <Picker
               selectedValue={gender}
-              onValueChange={(itemValue) => setGender(itemValue)}
+              onValueChange={(itemValue) => handleChangeGender(itemValue)}
               style={styles.selectGender}
             >
               <Picker.Item label="Nam" value="true" />
@@ -136,17 +135,9 @@ const Register = ({navigation}) => {
             </Picker>
           </View>
         </View>
-        <View style={styles.viewRegisterForgot}>
-          <TouchableOpacity>
-            <Text style={{ fontSize: 15 }}>{`Đã có tài khoản -> `} </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text style={{ fontSize: 15, color: "#1da1f2" }}>Đăng Nhập</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.btnLogin} onPress={handlePressRegister}>
+        <TouchableOpacity style={styles.btnLogin} onPress={handlePressUpdate}>
           <Text style={{ fontSize: 25, color: "white", fontWeight: "bold" }}>
-            REGISTER
+            UPDATE
           </Text>
         </TouchableOpacity>
       </View>
@@ -154,7 +145,7 @@ const Register = ({navigation}) => {
   );
 };
 
-export default Register;
+export default FormUpdateUser;
 
 const styles = StyleSheet.create({
   container: {
@@ -210,6 +201,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "green",
     borderRadius: 15,
+    marginTop : 30
   },
   viewSelectGender: {
     width: "100%",

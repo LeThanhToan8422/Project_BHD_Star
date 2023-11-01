@@ -535,6 +535,50 @@ let apiGetMovieByPage = (data) => {
   });
 };
 
+let apiGetSeatsOrdered = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log(data);
+      let seatsOrdered = await sequelize.query(
+        `SELECT t.seats FROM tickets AS t
+        INNER JOIN movies AS m ON t.movieID = m.movieID
+        INNER JOIN cinemas AS c ON t.cinemaID = c.cinemaID
+        INNER JOIN moviedates AS md ON t.movieDateID = md.movieDateID
+        INNER JOIN showtimes AS s ON t.showTimeID = s.showTimeID
+        WHERE t.movieID = '${data.movieID}' AND t.cinemaID = '${data.cinemaID}' AND t.movieDateID = '${data.movieDateID}' AND t.showTimeID = '${data.showTimeID}'`,
+        { 
+          type: QueryTypes.SELECT
+        }
+      );
+      resolve(seatsOrdered.length > 0 ? seatsOrdered[0].seats.split(";") : []);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+let apiGetTicketOrderedByUserID= (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let ticketOrdered = await sequelize.query(
+        `SELECT t.seats, t.combos, t.totalPrices, m.nameVN, c.name, md.date, s.time FROM tickets AS t
+        INNER JOIN movies AS m ON t.movieID = m.movieID
+        INNER JOIN cinemas AS c ON t.cinemaID = c.cinemaID
+        INNER JOIN moviedates AS md ON t.movieDateID = md.movieDateID
+        INNER JOIN showtimes AS s ON t.showTimeID = s.showTimeID
+        WHERE t.userID = '${id}'`,
+        { 
+          type: QueryTypes.SELECT
+        }
+      );
+        console.log(ticketOrdered[0]);
+      resolve(ticketOrdered.length > 0 ? ticketOrdered : []);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 let apiGetCinemaByPage = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -642,6 +686,20 @@ let apiGetUserByID = (id) => {
         where: { userID: id },
       });
       resolve(user);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+let apiGetAccountByUserID = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let account = await db.Account.findOne({
+        attributes : ["accountID", "email", "password", "userID"],
+        where: { userID: id },
+      });
+      resolve(account);
     } catch (error) {
       reject(error);
     }
@@ -1281,8 +1339,6 @@ let apiGetShowTimeMovie = (id) => {
         places : uniquePlace,
         showtimes :showtimes
       }
-      console.log(showTimeMovie);
-      console.log(showtimes);
       resolve(showTimeMovie)
     } catch (error) {
       reject(error);
@@ -1314,22 +1370,26 @@ let apiGetPricesOfFare = (data) => {
 let apiPutUpdateUser = (user) => {
   return new Promise(async (resolve, reject) => {
     try {
-      await db.User.update(
+      await sequelize.query(
+        "UPDATE `Users` SET `email`=:email,`name`=:name,`phone`=:phone,`dateOfBirth`=:dateOfBirth,`gender`=:gender WHERE `userID` =:userID",
         {
-          userID: user.id,
-          email: user.email,
-          name: user.name,
-          phone: user.phone,
-          dateOfBirth: user.date,
-          gender: user.gender,
-        },
-        { where: { userID: user.id } }
+          type: QueryTypes.INSERT,
+          replacements: {
+            userID: user.id,
+            email: user.email,
+            name: user.name,
+            phone: user.phone,
+            dateOfBirth: user.date,
+            gender: user.gender,
+          },
+        }
       );
       resolve({
         isUpdate: true,
         announceUpdate: `update ${user.id}-${user.email}-${user.name}-${user.phone}-${user.dateOfBirth}-${user.gender} is success`,
       });
     } catch (error) {
+      // reject(error)
       resolve({
         isUpdate: false,
         announceUpdate: `update ${user.id}-${user.email}-${user.name}-${user.phone}-${user.dateOfBirth}-${user.gender} is fail`,
@@ -1403,6 +1463,27 @@ let apiPutUpdateCinema = (cinema) => {
         isUpdate: false,
         announceUpdate: `update ${cinema.id}-${cinema.name}-${cinema.address}-${cinema.phone}-${cinema.image}-${cinema.placeID} is fail`,
       });
+    }
+  });
+};
+
+let apiPutUpdateAccount = (account) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await sequelize.query(
+        "UPDATE `Accounts` SET `password`=:password WHERE `accountID` = :accountID",
+        {
+          type: QueryTypes.INSERT,
+          replacements: {
+            accountID : account.id,
+            password : account.password
+          },
+        }
+      );
+      resolve(true);
+    } catch (error) {
+      reject(error)
+      resolve(false);
     }
   });
 };
@@ -1780,6 +1861,9 @@ module.exports = {
   apiGetShowTimeMovie,
   apiGetPricesOfFare,
   apiCheckAccountByEmailPassword,
+  apiGetAccountByUserID,
+  apiGetSeatsOrdered,
+  apiGetTicketOrderedByUserID,
   // API PUT
   apiPutUpdateUser,
   apiPutUpdateMovie,
@@ -1790,6 +1874,7 @@ module.exports = {
   apiPutUpdateTicket,
   apiPutUpdateCombo,
   apiPutUpdateFare,
+  apiPutUpdateAccount,
 
   // API DELETE
   apiDeleteUserByID,

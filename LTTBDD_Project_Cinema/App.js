@@ -1,5 +1,3 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message";
@@ -11,6 +9,9 @@ import ChooseSeats from "./src/chooseSeats/ChooseSeats"
 import Concession from "./src/concession/Concession"
 import FinishPayment from "./src/finishPayment/FinishPayment"
 import Register from "./src/register/Register";
+import FormUpdateUser from "./src/formUpdateUser/FormUpdateUser";
+import FormChangePassword from "./src/formChangePassword/FormChangePassword";
+import Detail from "./src/details/Detail";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -31,6 +32,9 @@ export default function App() {
         <Stack.Screen name="ChooseSeats" component={ChooseSeats} />
         <Stack.Screen name="Concession" component={Concession} />
         <Stack.Screen name="FinishPayment" component={FinishPayment} />
+        <Stack.Screen name="FormUpdateUser" component={FormUpdateUser} />
+        <Stack.Screen name="FormChangePassword" component={FormChangePassword} />
+        <Stack.Screen name="Detail" component={Detail} />
       </Stack.Navigator>
     </NavigationContainer>
     <Toast />
@@ -38,12 +42,3 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop : 30
-  },
-});

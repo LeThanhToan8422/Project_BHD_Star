@@ -194,6 +194,13 @@ let apiGetUserByID = async(req, res) => {
     })
 }
 
+let apiGetAccountByUserID = async(req, res) => {
+    let account = await service.apiGetAccountByUserID(req.body.id)
+    return res.status(200).json({
+        account : account
+    })
+}
+
 let apiCheckAccountByEmailPassword = async(req, res) => {
     let user = await service.apiCheckAccountByEmailPassword(req.body.email, req.body.password)
     return res.status(200).json({
@@ -340,9 +347,28 @@ let apiGetPricesOfFare = async(req, res) => {
         price : price
     })
 }
+
+let apiGetSeatsOrdered = async(req, res) => {
+    let seatsOrdered = await service.apiGetSeatsOrdered(req.body)
+    return res.status(200).json({
+        seatsOrdered : seatsOrdered
+    })
+}
+
+let apiGetTicketOrderedByUserID = async(req, res) => {
+    let ticketOrdered = await service.apiGetTicketOrderedByUserID(req.body.id)
+    return res.status(200).json({
+        ticketOrdered : ticketOrdered
+    })
+}
 //API PUT
 let apiPutUpdateUser = async(req, res) => {
     let data = await service.apiPutUpdateUser(req.body)
+    return res.status(200).json(data);
+}
+
+let apiPutUpdateAccount = async(req, res) => {
+    let data = await service.apiPutUpdateAccount(req.body)
     return res.status(200).json(data);
 }
 
@@ -481,6 +507,9 @@ module.exports = {
     apiGetShowTimeMovie,
     apiGetPricesOfFare,
     apiCheckAccountByEmailPassword,
+    apiGetAccountByUserID,
+    apiGetSeatsOrdered,
+    apiGetTicketOrderedByUserID,
     // API PUT
     apiPutUpdateUser,
     apiPutUpdateMovie,
@@ -491,6 +520,7 @@ module.exports = {
     apiPutUpdateTicket,
     apiPutUpdateCombo,
     apiPutUpdateFare,
+    apiPutUpdateAccount,
     // API DELETE
     apiDeleteUserByID,
     apiDeleteMovieByID,

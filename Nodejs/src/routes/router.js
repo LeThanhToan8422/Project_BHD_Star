@@ -35,6 +35,7 @@ let initWebRoutes = (app) => {
     router.post("/api/combo/get-combos-by-page", controller.apiGetComboByPage)
     router.post("/api/fare/get-fares-by-page", controller.apiGetFareByPage)
     router.post("/api/user/get-user-by-id", controller.apiGetUserByID)
+    router.post("/api/account/get-account-by-userID", controller.apiGetAccountByUserID)
     router.post("/api/movie/get-movie-by-id", controller.apiGetMovieByID)
     router.post("/api/cinema/get-cinema-by-id", controller.apiGetCinemaByID)
     router.post("/api/movie-date/get-movieDate-by-id", controller.apiGetMovieDateByID)
@@ -56,6 +57,8 @@ let initWebRoutes = (app) => {
     router.post("/api/movie/get-show-time-movie-by-movieID", controller.apiGetShowTimeMovie)
     router.post("/api/fare/get-prices-of-fare-by-cinemaID", controller.apiGetPricesOfFare)
     router.post("/api/account/check-account-by-email-password", controller.apiCheckAccountByEmailPassword)
+    router.post("/api/seat/get-seats-ordered", controller.apiGetSeatsOrdered)
+    router.post("/api/ticket/get-tickets-ordered-by-userID", controller.apiGetTicketOrderedByUserID)
     // API POST
     router.post("/api/account/post-account", controller.apiPostInsertAccount)
     router.post("/api/user/post-user", controller.apiPostInsertUser)
@@ -77,6 +80,7 @@ let initWebRoutes = (app) => {
     router.put("/api/ticket/put-ticket", controller.apiPutUpdateTicket)
     router.put("/api/combo/put-combo", controller.apiPutUpdateCombo)
     router.put("/api/fare/put-fare", controller.apiPutUpdateFare)
+    router.put("/api/account/put-account", controller.apiPutUpdateAccount)
 
     // API DELETE
     router.post("/api/user/delete-user-by-id", controller.apiDeleteUserByID)

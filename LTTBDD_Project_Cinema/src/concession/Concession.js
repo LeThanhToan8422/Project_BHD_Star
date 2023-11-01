@@ -16,28 +16,24 @@ const Concession = ({ navigation, route }) => {
   const [time, setTime] = useState("");
   const [concession, setConcession] = useState([
     {
-      name: "OL Special Combo1 Bap nam XX loc xoay (Sweet)(combo1)",
+      name: "OL Special Combo1 Bap nam XX loc xoay (Sweet)",
       prices: 150000,
       src: require("../../assets/imgConcession/concession1.png"),
-      csName: "combo1",
     },
     {
-      name: "OL Special Combo1 Khoai Lac (Sweet)(combo2)",
+      name: "OL Special Combo1 Khoai Lac (Sweet)",
       prices: 150000,
       src: require("../../assets/imgConcession/concession2.png"),
-      csName: "combo2",
     },
     {
-      name: "OL Special Combo2 Bap nam XX loc xoay (Sweet)(combo3)",
+      name: "OL Special Combo2 Bap nam XX loc xoay (Sweet)",
       prices: 181000,
       src: require("../../assets/imgConcession/concession3.png"),
-      csName: "combo3",
     },
     {
-      name: "OL Special Combo2 Khoai Lac (Sweet)(combo4)",
+      name: "OL Special Combo2 Khoai Lac (Sweet)",
       prices: 181000,
       src: require("../../assets/imgConcession/concession4.png"),
-      csName: "combo4",
     },
   ]);
 
@@ -63,7 +59,7 @@ const Concession = ({ navigation, route }) => {
     setConcessionChosen(
       concession.map((cs, index) => {
         if (quantityConcession[index] > 0) {
-          return cs.csName;
+          return cs.name;
         } else {
           return null;
         }
@@ -105,7 +101,7 @@ const Concession = ({ navigation, route }) => {
       cinemaID: route.params.cinemaID,
       movieDateID: route.params.movieDateID,
       showTimeID: route.params.showTimeID,
-      userID : route.params.userID
+      userID: route.params.userID,
     });
   };
   return (
@@ -208,7 +204,12 @@ const Concession = ({ navigation, route }) => {
           ))}
         </View>
       </ScrollView>
-      <View style={styles.ViewTotalSeatsChosenPrices}>
+      <View
+        style={{
+          height: 180 + concessionChosen.filter((c) => c !== null).length * 20,
+          ...styles.ViewTotalSeatsChosenPrices,
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -243,7 +244,13 @@ const Concession = ({ navigation, route }) => {
             marginVertical: 5,
           }}
         >
-          <Text style={{ color: "rgba(255,255,255,0.9)", fontSize: 15 }}>
+          <Text
+            style={{
+              width: "75%",
+              color: "rgba(255,255,255,0.9)",
+              fontSize: 15,
+            }}
+          >
             {concessionChosen.join(" ")}
           </Text>
           <Text style={{ color: "rgba(255,255,255,0.9)", fontSize: 15 }}>
@@ -314,7 +321,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   ViewTotalSeatsChosenPrices: {
-    height: 180,
     flexDirection: "column",
     justifyContent: "center",
     paddingHorizontal: 10,

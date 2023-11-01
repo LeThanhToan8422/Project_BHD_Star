@@ -55,7 +55,24 @@ const ChooseSeats = ({ navigation, route }) => {
     ],
   });
   const [seatsChosen, setSeatsChosen] = useState([]);
+  const [seatsOrdered, setSeatsOrdered] = useState([]);
   const [pricesOfSeats, setPricesOfSeats] = useState(0);
+
+  useEffect(() => {
+    let apiGetSeatsOrdered = async() => {
+      let data = await axios.post(
+        "http://10.0.2.2:8080/api/seat/get-seats-ordered",
+        {
+          movieID : route.params.movie.movieID,
+          cinemaID : route.params.cinema.cinemaID,
+          movieDateID : route.params.date.movieDateID,
+          showTimeID : route.params.showTimeID
+        }
+      );
+      setSeatsOrdered(data.data.seatsOrdered);
+    }
+    apiGetSeatsOrdered()
+  }, [])
 
   useEffect(() => {
     setNameCinema(route.params.cinema.name);
@@ -84,25 +101,27 @@ const ChooseSeats = ({ navigation, route }) => {
   }, [route.params]);
 
   let handlePressSeat = async (seat) => {
-    if (seatsChosen.includes(seat)) {
-      setSeatsChosen((prevSeats) =>
-        prevSeats.filter((seatChosen) => seatChosen !== seat)
-      );
-    } else {
-      setSeatsChosen([...seatsChosen, seat]);
-    }
-    let data = await axios.post(
-      "http://10.0.2.2:8080/api/fare/get-prices-of-fare-by-cinemaID",
-      {
-        cinemaID: route.params.cinema.cinemaID,
-        time: route.params.time,
-        date: route.params.date.date.slice(0, 10),
-        quantity: seatsChosen.includes(seat)
-          ? seatsChosen.length - 1
-          : seatsChosen.length + 1,
+    if(!seatsOrdered.includes(seat)){
+      if (seatsChosen.includes(seat)) {
+        setSeatsChosen((prevSeats) =>
+          prevSeats.filter((seatChosen) => seatChosen !== seat)
+        );
+      } else {
+        setSeatsChosen([...seatsChosen, seat]);
       }
-    );
-    setPricesOfSeats(data.data.price);
+      let data = await axios.post(
+        "http://10.0.2.2:8080/api/fare/get-prices-of-fare-by-cinemaID",
+        {
+          cinemaID: route.params.cinema.cinemaID,
+          time: route.params.time,
+          date: route.params.date.date.slice(0, 10),
+          quantity: seatsChosen.includes(seat)
+            ? seatsChosen.length - 1
+            : seatsChosen.length + 1,
+        }
+      );
+      setPricesOfSeats(data.data.price);
+    }
   };
 
   let handlePressFinishPayment = () => {
@@ -229,9 +248,11 @@ const ChooseSeats = ({ navigation, route }) => {
                       name="couch"
                       size={20}
                       color={
-                        seatsChosen.includes(seat)
-                          ? "rgba(89,178,42,1)"
-                          : "rgba(74,74,72,1)"
+                        seatsOrdered.includes(seat)
+                        ? "rgba(233,77,80,1)"
+                        : seatsChosen.includes(seat)
+                        ? "rgba(89,178,42,1)"
+                        : "rgba(74,74,72,1)"
                       }
                       onPress={() => handlePressSeat(seat)}
                     />
@@ -248,10 +269,12 @@ const ChooseSeats = ({ navigation, route }) => {
                       key={seat}
                       name="couch"
                       size={20}
-                      color={
-                        seatsChosen.includes(seat)
-                          ? "rgba(89,178,42,1)"
-                          : "rgba(74,74,72,1)"
+                      ccolor={
+                        seatsOrdered.includes(seat)
+                        ? "rgba(233,77,80,1)"
+                        : seatsChosen.includes(seat)
+                        ? "rgba(89,178,42,1)"
+                        : "rgba(74,74,72,1)"
                       }
                       onPress={() => handlePressSeat(seat)}
                     />
@@ -269,9 +292,11 @@ const ChooseSeats = ({ navigation, route }) => {
                       name="couch"
                       size={20}
                       color={
-                        seatsChosen.includes(seat)
-                          ? "rgba(89,178,42,1)"
-                          : "rgba(74,74,72,1)"
+                        seatsOrdered.includes(seat)
+                        ? "rgba(233,77,80,1)"
+                        : seatsChosen.includes(seat)
+                        ? "rgba(89,178,42,1)"
+                        : "rgba(74,74,72,1)"
                       }
                       onPress={() => handlePressSeat(seat)}
                     />
