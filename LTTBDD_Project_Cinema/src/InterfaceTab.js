@@ -11,11 +11,11 @@ import Personal from "./personal/Personal";
 const Tab = createBottomTabNavigator();
 
 const InterfaceTab = ({route, navigation}) => {
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(route.params.user)
 
-  useEffect(() => {
-    setUser(route.params.user);
-  }, [JSON.stringify(route.params.user)])
+  // useEffect(() => {
+  //   setUser(route.params.user);
+  // }, [JSON.stringify(route.params.user)])
 
   return (
     <SafeAreaProvider style={styles.container}>
@@ -48,13 +48,13 @@ const InterfaceTab = ({route, navigation}) => {
           tabBarInactiveTintColor: "#999999",
         })}
       >
-        <Tab.Screen name="Home" component={Home}/>
+        <Tab.Screen name="Home" component={Home} initialParams={{userID : user.userID}}/>
         <Tab.Screen name="Personal" component={Personal} initialParams={{user : user}}
-        listeners={({navigation}) => ({
-          focus : () => {
-            navigation.navigate("Personal", {user : user})
-          }
-        })}
+        // listeners={({navigation}) => ({
+        //   focus : () => {
+        //     navigation.navigate("Personal", {user : user})
+        //   }
+        // })}
         />
       </Tab.Navigator>
     </SafeAreaProvider>

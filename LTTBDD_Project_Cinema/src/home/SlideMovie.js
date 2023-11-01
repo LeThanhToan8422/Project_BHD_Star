@@ -8,7 +8,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Carousel from "react-native-snap-carousel";
 import axios from "axios";
 
-const SlideMovie = ({navigation}) => {
+const SlideMovie = ({navigation, userID}) => {
 
   const [isPressBtnShow, setIsPressBtnShow] = useState(true);
   const [movie, setMovie] = useState({ nameEN: "" });
@@ -127,7 +127,8 @@ const SlideMovie = ({navigation}) => {
     navigation.navigate('BookingMovie', {
       imageMovie: isPressBtnShow
         ? imagesNowShowing[activeIndex]
-        : imagesComingSoon[activeIndex]
+        : imagesComingSoon[activeIndex],
+      userID : userID
     })
   }
 

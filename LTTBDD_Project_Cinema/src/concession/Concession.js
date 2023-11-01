@@ -105,6 +105,7 @@ const Concession = ({ navigation, route }) => {
       cinemaID: route.params.cinemaID,
       movieDateID: route.params.movieDateID,
       showTimeID: route.params.showTimeID,
+      userID : route.params.userID
     });
   };
   return (

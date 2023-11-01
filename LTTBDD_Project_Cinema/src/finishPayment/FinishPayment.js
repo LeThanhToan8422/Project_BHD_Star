@@ -42,6 +42,7 @@ const FinishPayment = ({ navigation, route }) => {
             movie: route.params.movieID,
             movieDate: route.params.movieDateID,
             showTime: route.params.showTimeID,
+            userID : route.params.userID
           }
         );
         Toast.show({

@@ -2,11 +2,7 @@ import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 const Personal = ({route, navigation}) => {
-  const [user, setUser] = useState({})
-
-  useEffect(() => {
-    setUser(route.params.user);
-  }, [JSON.stringify(route.params.user)])
+  const [user, setUser] = useState(route.params.user)
 
   return (
     <ImageBackground source={require('../../assets/imgBackground/sky-star.jpg')}

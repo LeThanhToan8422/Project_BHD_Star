@@ -148,7 +148,8 @@ const BookingMovie = ({ navigation, route }) => {
       showTimeID : showtime.showTimeID,
       time : showtime.time.slice(0,5),
       quality : showtime.quality,
-      imageMovie : imageMovie
+      imageMovie : imageMovie,
+      userID : route.params.userID
     })
   }
 
@@ -302,7 +303,7 @@ const BookingMovie = ({ navigation, route }) => {
         name="chevron-back-outline"
         size={35}
         color={"white"}
-        onPress={() => navigation.navigate("InterfaceTab")}
+        onPress={() => navigation.goBack()}
       />
     </SafeAreaView>
   );

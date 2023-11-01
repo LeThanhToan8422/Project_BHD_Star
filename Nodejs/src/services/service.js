@@ -183,7 +183,7 @@ let apiPostInsertTicket = (ticket) => {
       totalPrices += ticketPrices*ticket.quantityTickets
 
       await sequelize.query(
-        "INSERT INTO tickets (ticketID,quantityTickets,seats,combos,totalPrices,cinemaID,movieID,movieDateID,showTimeID) VALUES (:ticketID,:quantityTickets,:seats,:combos,:totalPrices,:cinemaID,:movieID,:movieDateID,:showTimeID);",
+        "INSERT INTO tickets (ticketID,quantityTickets,seats,combos,totalPrices,userID,cinemaID,movieID,movieDateID,showTimeID) VALUES (:ticketID,:quantityTickets,:seats,:combos,:totalPrices,:userID,:cinemaID,:movieID,:movieDateID,:showTimeID);",
         {
           type: QueryTypes.INSERT,
           replacements: {
@@ -192,6 +192,7 @@ let apiPostInsertTicket = (ticket) => {
             seats: ticket.seats.join(";"),
             combos: ticket.combos.join(";"),
             totalPrices : ticket.totalPrices,
+            userID : ticket.userID,
             cinemaID: ticket.cinema,
             movieID: ticket.movie,
             movieDateID: ticket.movieDate,

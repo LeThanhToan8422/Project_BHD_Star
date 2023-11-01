@@ -118,6 +118,7 @@ const ChooseSeats = ({ navigation, route }) => {
       cinemaID: route.params.cinema.cinemaID,
       movieDateID: route.params.date.movieDateID,
       showTimeID: route.params.showTimeID,
+      userID : route.params.userID
     });
   };
 
