@@ -1,6 +1,11 @@
 import service from '../services/service'
 
 // API POST
+let apiPostInsertAccount = async(req, res) => {
+    let data = await service.apiPostInsertAccount(req.body)
+    return res.status(200).json(data);
+}
+
 let apiPostInsertUser = async(req, res) => {
     let data = await service.apiPostInsertUser(req.body)
     return res.status(200).json(data);
@@ -81,6 +86,13 @@ let apiGetUserID = async(req, res) => {
     let userID = await service.apiGetUserID()
     return res.status(200).json({
         userID : userID
+    })
+}
+
+let apiGetAccountID = async(req, res) => {
+    let accountID = await service.apiGetAccountID()
+    return res.status(200).json({
+        accountID : accountID
     })
 }
 
@@ -177,6 +189,13 @@ let apiGetFareByPage = async(req, res) => {
 
 let apiGetUserByID = async(req, res) => {
     let user = await service.apiGetUserByID(req.body.id)
+    return res.status(200).json({
+        user : user
+    })
+}
+
+let apiCheckAccountByEmailPassword = async(req, res) => {
+    let user = await service.apiCheckAccountByEmailPassword(req.body.email, req.body.password)
     return res.status(200).json({
         user : user
     })
@@ -418,6 +437,7 @@ module.exports = {
     apiPostInsertTicket,
     apiPostInsertCombo,
     apiPostInsertFare,
+    apiPostInsertAccount,
     //API GET
     apiGetListCinema,
     apiGetListMovie,
@@ -425,6 +445,7 @@ module.exports = {
     apiGetSeatsChosen,
     apiGetCombos,
     apiGetUserID,
+    apiGetAccountID,
     apiGetMovieID,
     apiGetCinemaID,
     apiGetMovieDateID,
@@ -459,6 +480,7 @@ module.exports = {
     apiGetDetailInfoTicket,
     apiGetShowTimeMovie,
     apiGetPricesOfFare,
+    apiCheckAccountByEmailPassword,
     // API PUT
     apiPutUpdateUser,
     apiPutUpdateMovie,

@@ -58,7 +58,6 @@ const BookingMovie = ({ navigation, route }) => {
   const [dateChosen, setDatechosen] = useState("");
   const [placeChosen, setPlaceChosen] = useState("");
   const [cinemaDisplay, setCinemaDisplay] = useState("");
-  const [heightShowTimes, setHeightShowTimes] = useState(50);
   const { height } = Dimensions.get("screen");
   let ref = useRef();
 
@@ -84,7 +83,6 @@ const BookingMovie = ({ navigation, route }) => {
   useEffect(() => {
     showTimes.forEach(value => {
       if(isPressSeenShowTime.isPress[isPressSeenShowTime.id.indexOf(value[0].cinemaID)] && dateChosen === value[0].date.slice(8,10) && value[0].place === placeChosen){
-        // console.log(JSON.parse(value[0].showtimes.replace(/'/g, "\"")));
         setShowTime(JSON.parse(value[0].showtimes.replace(/'/g, "\"")))
       }
     })
@@ -142,13 +140,14 @@ const BookingMovie = ({ navigation, route }) => {
     }
   };
 
-  let handlePressShowTime = (time, quality) => {
+  let handlePressShowTime = (showtime) => {
     navigation.navigate("ChooseSeats", {
       cinema : movies.cinemas.find(cinema => cinema.cinemaID === isPressSeenShowTime.id[isPressSeenShowTime.isPress.indexOf(true)]),
       date : movies.movieDates.find(movieDate => movieDate.date.slice(8,10) === dateChosen),
       movie : movies.movie,
-      time : time,
-      quality : quality,
+      showTimeID : showtime.showTimeID,
+      time : showtime.time.slice(0,5),
+      quality : showtime.quality,
       imageMovie : imageMovie
     })
   }
@@ -163,7 +162,7 @@ const BookingMovie = ({ navigation, route }) => {
           />
         </View>
         <ImageBackground
-          source={require("../../../assets/imgBackground/sky-star.jpg")}
+          source={require("../../assets/imgBackground/sky-star.jpg")}
           style={{ with: "100%", minHeight: height, paddingHorizontal: 10 }}
         >
           <View style={styles.viewName}>
@@ -279,7 +278,7 @@ const BookingMovie = ({ navigation, route }) => {
                                       : "SUB"}
                                   </Text>
                                   <TouchableWithoutFeedback
-                                  onPress={() => handlePressShowTime(showtime.time.slice(0,5), showtime.quality)}
+                                  onPress={() => handlePressShowTime(showtime)}
                                   >
                                     <View>
                                       <Text style={styles.textTime}>

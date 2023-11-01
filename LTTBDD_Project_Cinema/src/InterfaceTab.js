@@ -1,24 +1,35 @@
 import { StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./home/Home";
-import ShowTime from "./showtime/ShowTime";
+import ShowTime from "./login/Login";
 import Personal from "./personal/Personal";
 
-const InterfaceTab = () => {
-  const Tab = createBottomTabNavigator();
+
+const Tab = createBottomTabNavigator();
+
+const InterfaceTab = ({route, navigation}) => {
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+    setUser(route.params.user);
+  }, [JSON.stringify(route.params.user)])
+
   return (
     <SafeAreaProvider style={styles.container}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: "#555555",
+            position : 'absolute',
+            backgroundColor: "rgba(85,85,85, 0.5)",
             height: 60,
-            paddingTop: 10,
-            paddingBottom: 10,
+            bottom : 25,
+            left : 100,
+            right : 100,
+            borderRadius : 15
           },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
@@ -37,9 +48,14 @@ const InterfaceTab = () => {
           tabBarInactiveTintColor: "#999999",
         })}
       >
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="ShowTime" component={ShowTime} />
-        <Tab.Screen name="Personal" component={Personal} />
+        <Tab.Screen name="Home" component={Home}/>
+        <Tab.Screen name="Personal" component={Personal} initialParams={{user : user}}
+        listeners={({navigation}) => ({
+          focus : () => {
+            navigation.navigate("Personal", {user : user})
+          }
+        })}
+        />
       </Tab.Navigator>
     </SafeAreaProvider>
   );

@@ -1,20 +1,27 @@
-import { SafeAreaView,
+import {
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
   Image,
-  ImageBackground, } from 'react-native'
+  ImageBackground,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const DetailMovie = ({navigation, route}) => {
-
+const DetailMovie = ({ navigation, route }) => {
   const [imageMovie, setImageMovie] = useState({ src: "" });
   const [movie, setMovie] = useState({
-     nameEN: "", time : "", category : "", contentFilm: "", premiereDate : "", director : "", actor : "" 
-    });
+    nameEN: "",
+    time: "",
+    category: "",
+    contentFilm: "",
+    premiereDate: "",
+    director: "",
+    actor: "",
+  });
   const [isPressMoreView, setIsPressMoreView] = useState(false);
   const [heightContentFilm, setHeightContentFilm] = useState(130);
 
@@ -31,10 +38,10 @@ const DetailMovie = ({navigation, route}) => {
   };
 
   let handlePressBooking = () => {
-    navigation.navigate('BookingMovie', {
-      imageMovie: route.params.imageMovie
-    })
-  }
+    navigation.navigate("BookingMovie", {
+      imageMovie: route.params.imageMovie,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -46,12 +53,10 @@ const DetailMovie = ({navigation, route}) => {
           />
         </View>
         <ImageBackground
-          source={require("../../../assets/imgBackground/sky-star.jpg")}
+          source={require("../../assets/imgBackground/sky-star.jpg")}
           style={{ with: "100%" }}
         >
-          <View
-            style={[styles.viewInfoMovie, { height: 100 + heightContentFilm }]}
-          >
+          <View style={[styles.viewInfoMovie]}>
             <View style={styles.viewNameTime}>
               <Text
                 style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
@@ -79,11 +84,11 @@ const DetailMovie = ({navigation, route}) => {
               {movie.category}
             </Text>
             <View style={styles.viewEvaluate}>
-              <Ionicons name="star" size={15} color={'#50fa7b'}/>
-              <Ionicons name="star" size={15} color={'#50fa7b'}/>
-              <Ionicons name="star" size={15} color={'#50fa7b'}/>
-              <Ionicons name="star" size={15} color={'#50fa7b'}/>
-              <Ionicons name="star" size={15} color={'#50fa7b'}/>
+              <Ionicons name="star" size={15} color={"#50fa7b"} />
+              <Ionicons name="star" size={15} color={"#50fa7b"} />
+              <Ionicons name="star" size={15} color={"#50fa7b"} />
+              <Ionicons name="star" size={15} color={"#50fa7b"} />
+              <Ionicons name="star" size={15} color={"#50fa7b"} />
             </View>
             <Text
               style={{
@@ -95,24 +100,26 @@ const DetailMovie = ({navigation, route}) => {
             >
               Description
             </Text>
-            <Text
+            <View
               style={{
                 color: "rgba(255,255,255,0.8)",
-                height: heightContentFilm,
+                // height: heightContentFilm,
               }}
             >
-              {movie.contentFilm.length > 250 && isPressMoreView === false
-                ? movie.contentFilm.slice(0, 250)
-                : movie.contentFilm}
-              <Text
-                style={{ color: "#50fa7b" }}
-                onPress={() => handlePressMoreView(movie.contentFilm.length)}
-              >
+              <Text style={{ color: "rgba(255,255,255,0.8)" }}>
                 {movie.contentFilm.length > 250 && isPressMoreView === false
-                  ? "...More View"
-                  : " less View"}
+                  ? movie.contentFilm.slice(0, 250)
+                  : movie.contentFilm}
+                <Text
+                  style={{ color: "#50fa7b" }}
+                  onPress={() => handlePressMoreView(movie.contentFilm.length)}
+                >
+                  {movie.contentFilm.length > 250 && isPressMoreView === false
+                    ? "...More View"
+                    : " less View"}
+                </Text>
               </Text>
-            </Text>
+            </View>
           </View>
           <View style={styles.viewDate}>
             <View style={styles.viewContentDate}>
@@ -164,10 +171,10 @@ const DetailMovie = ({navigation, route}) => {
         onPress={() => navigation.navigate("Home")}
       />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default DetailMovie
+export default DetailMovie;
 
 const styles = StyleSheet.create({
   container: {
@@ -192,12 +199,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 5,
   },
-  viewEvaluate : {
-    width : '25%',
-    flexDirection : 'row',
-    justifyContent : 'space-between',
-    alignItems : 'center',
-    marginVertical : 5
+  viewEvaluate: {
+    width: "25%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 5,
   },
   viewDate: {
     width: "100%",
@@ -261,7 +268,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "flex-start",
     alignItems: "center",
-    marginBottom : 50
+    marginBottom: 50,
   },
   textBtnBooking: {
     width: 120,
@@ -272,4 +279,4 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(80,250,123, 0.7)",
     borderRadius: 5,
   },
-})
+});

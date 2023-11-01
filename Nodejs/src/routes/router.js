@@ -20,6 +20,7 @@ let initWebRoutes = (app) => {
     router.get("/api/ticket/get-seats-chosen", controller.apiGetSeatsChosen)
     router.get("/api/ticket/get-combos", controller.apiGetCombos)
     router.get("/api/user/get-userID", controller.apiGetUserID)
+    router.get("/api/account/get-accountID", controller.apiGetAccountID)
     router.get("/api/movie/get-movieID", controller.apiGetMovieID)
     router.get("/api/cinema/get-cinemaID", controller.apiGetCinemaID)
     router.get("/api/movie-date/get-movieDateID", controller.apiGetMovieDateID)
@@ -54,7 +55,9 @@ let initWebRoutes = (app) => {
     router.post("/api/ticket/get-detail-info-ticket-by-id", controller.apiGetDetailInfoTicket)
     router.post("/api/movie/get-show-time-movie-by-movieID", controller.apiGetShowTimeMovie)
     router.post("/api/fare/get-prices-of-fare-by-cinemaID", controller.apiGetPricesOfFare)
+    router.post("/api/account/check-account-by-email-password", controller.apiCheckAccountByEmailPassword)
     // API POST
+    router.post("/api/account/post-account", controller.apiPostInsertAccount)
     router.post("/api/user/post-user", controller.apiPostInsertUser)
     router.post("/api/movie/post-movie", controller.apiPostInsertMovie)
     router.post("/api/cinema/post-cinema", controller.apiPostInsertCinema)

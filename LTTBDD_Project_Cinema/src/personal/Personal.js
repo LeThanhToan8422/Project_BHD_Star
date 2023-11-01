@@ -1,15 +1,17 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, ImageBackground } from 'react-native'
+import React, { useEffect, useState } from 'react'
 
-const Personal = ({navigation}) => {
+const Personal = ({route, navigation}) => {
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+    setUser(route.params.user);
+  }, [JSON.stringify(route.params.user)])
+
   return (
-    <View>
-      <TouchableWithoutFeedback onPress={() => navigation.navigate('DetailMovie')}>
-        <View>
-          <Text>Navigation</Text>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+    <ImageBackground source={require('../../assets/imgBackground/sky-star.jpg')}
+    style={{width : '100%', height : '100%'}}>
+    </ImageBackground>
   )
 }
 

@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    paddingBottom : 80
   },
   viewButton: {
     width: "90%",

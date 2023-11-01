@@ -1,4 +1,10 @@
-import { ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -101,19 +107,23 @@ const ChooseSeats = ({ navigation, route }) => {
 
   let handlePressFinishPayment = () => {
     navigation.navigate("Concession", {
-      nameCinema : nameCinema,
-      date : date, 
-      time : time,
-      quality : route.params.quality,
-      seatsChosen : seatsChosen,
-      pricesOfSeats : pricesOfSeats,
-      imageMovie : route.params.imageMovie
-    })
-  }
+      nameCinema: nameCinema,
+      date: date,
+      time: time,
+      quality: route.params.quality,
+      seatsChosen: seatsChosen,
+      pricesOfSeats: pricesOfSeats,
+      imageMovie: route.params.imageMovie,
+      movieID: route.params.movie.movieID,
+      cinemaID: route.params.cinema.cinemaID,
+      movieDateID: route.params.date.movieDateID,
+      showTimeID: route.params.showTimeID,
+    });
+  };
 
   return (
     <ImageBackground
-      source={require("../../../../assets/imgBackground/sky-star.jpg")}
+      source={require("../../assets/imgBackground/sky-star.jpg")}
       style={styles.container}
     >
       <View style={styles.viewNamePage}>
@@ -204,7 +214,9 @@ const ChooseSeats = ({ navigation, route }) => {
           <View style={styles.viewSeats}>
             <View style={styles.nameRangeSeats}>
               {seats.nameRangeSeats.map((name) => (
-                <Text key={name} style={styles.textRangeSeats}>{name}</Text>
+                <Text key={name} style={styles.textRangeSeats}>
+                  {name}
+                </Text>
               ))}
             </View>
             <View style={styles.viewContentSeats}>
@@ -212,7 +224,7 @@ const ChooseSeats = ({ navigation, route }) => {
                 <View key={index.toString()} style={{ flexDirection: "row" }}>
                   {arrSeats.map((seat) => (
                     <FontAwesome
-                    key={seat}
+                      key={seat}
                       name="couch"
                       size={20}
                       color={
@@ -228,11 +240,11 @@ const ChooseSeats = ({ navigation, route }) => {
             </View>
 
             <View style={styles.viewContentSeats}>
-              {seats.seatsCenter.map((arrSeats) => (
-                <View style={{ flexDirection: "row" }}>
+              {seats.seatsCenter.map((arrSeats, index) => (
+                <View key={index} style={{ flexDirection: "row" }}>
                   {arrSeats.map((seat) => (
                     <FontAwesome
-                    key={seat}
+                      key={seat}
                       name="couch"
                       size={20}
                       color={
@@ -248,11 +260,11 @@ const ChooseSeats = ({ navigation, route }) => {
             </View>
 
             <View style={styles.viewContentSeats}>
-              {seats.seatsRight.map((arrSeats) => (
-                <View style={{ flexDirection: "row" }}>
+              {seats.seatsRight.map((arrSeats, index) => (
+                <View key={index} style={{ flexDirection: "row" }}>
                   {arrSeats.map((seat) => (
                     <FontAwesome
-                    key={seat}
+                      key={seat}
                       name="couch"
                       size={20}
                       color={
@@ -301,7 +313,7 @@ const ChooseSeats = ({ navigation, route }) => {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            marginVertical : 5
+            marginVertical: 5,
           }}
         >
           <Text
@@ -315,9 +327,13 @@ const ChooseSeats = ({ navigation, route }) => {
           </Text>
         </View>
         <TouchableWithoutFeedback onPress={handlePressFinishPayment}>
-          <View style={{
-            flexDirection : 'row', justifyContent : 'center', alignItems : 'center'
-          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Text style={styles.textBtnFinish}>Finish Payment (1/3)</Text>
           </View>
         </TouchableWithoutFeedback>
@@ -396,19 +412,19 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     flexDirection: "column",
-    justifyContent : 'center',
+    justifyContent: "center",
     paddingHorizontal: 10,
     backgroundColor: "rgba(40,40,40,1)",
   },
-  textBtnFinish : {
-    backgroundColor : '#828282', 
-    paddingHorizontal : 80, 
-    paddingVertical : 20,
-    color : 'white', 
-    fontSize : 18, 
-    fontWeight : 'bold', 
-    borderRadius : 5,
-    marginVertical : 10, 
-    marginBottom : 25 
-  }
+  textBtnFinish: {
+    backgroundColor: "#828282",
+    paddingHorizontal: 80,
+    paddingVertical: 20,
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+    borderRadius: 5,
+    marginVertical: 10,
+    marginBottom: 25,
+  },
 });

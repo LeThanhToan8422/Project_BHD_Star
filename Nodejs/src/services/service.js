@@ -6,19 +6,26 @@ const { Op, Sequelize } = require("sequelize");
 let apiPostInsertUser = (user) => {
   return new Promise(async (resolve, reject) => {
     try {
-      await db.User.create({
-        userID: user.id,
-        email: user.email,
-        name: user.name,
-        phone: user.phone,
-        dateOfBirth: user.date,
-        gender: user.gender,
-      });
+      await sequelize.query(
+        "INSERT INTO `Users` (userID,email,name,phone,dateOfBirth,gender) VALUES (:userID,:email,:name,:phone,:dateOfBirth,:gender)",
+        {
+          type: QueryTypes.INSERT,
+          replacements: {
+            userID: user.id,
+            email: user.email,
+            name: user.name,
+            phone: user.phone,
+            dateOfBirth: user.date,
+            gender: user.gender,
+          },
+        }
+      );
       resolve({
         isInsert: true,
         announceInsert: `insert ${user.id} is success`,
       });
     } catch (error) {
+      // reject(error)
       resolve({
         isInsert: false,
         announceInsert: `insert ${user.id} is fail`,
@@ -77,6 +84,31 @@ let apiPostInsertCinema = (cinema) => {
       resolve({
         isInsert: true,
         announceInsert: `insert ${cinema.id} is success`,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+let apiPostInsertAccount = (account) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await sequelize.query(
+        "INSERT INTO `Accounts` (accountID,email,password,userID) VALUES (:accountID,:email,:password,:userID)",
+        {
+          type: QueryTypes.INSERT,
+          replacements: {
+            accountID : account.id,
+            email : account.email,
+            password : account.password,
+            userID : account.userID
+          },
+        }
+      );
+      resolve({
+        isInsert: true,
+        announceInsert: `insert ${account.accountID} is success`,
       });
     } catch (error) {
       reject(error);
@@ -159,7 +191,7 @@ let apiPostInsertTicket = (ticket) => {
             quantityTickets: ticket.quantityTickets,
             seats: ticket.seats.join(";"),
             combos: ticket.combos.join(";"),
-            totalPrices : totalPrices,
+            totalPrices : ticket.totalPrices,
             cinemaID: ticket.cinema,
             movieID: ticket.movie,
             movieDateID: ticket.movieDate,
@@ -316,13 +348,27 @@ let apiGetCombos = () => {
 let apiGetUserID = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      // let userID = await sequelize.query(`SELECT id FROM users ORDER BY id DESC LIMIT 1`, {type : QueryTypes.SELECT})
       let userID = await db.User.findOne({
         attributes: ["id"],
         order: [["id", "DESC"]],
         limit: 1,
       });
       resolve(userID === null ? 0 : userID.dataValues.id);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+let apiGetAccountID = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let accountID = await db.User.findOne({
+        attributes: ["id"],
+        order: [["id", "DESC"]],
+        limit: 1,
+      });
+      resolve(accountID === null ? 0 : accountID.dataValues.id);
     } catch (error) {
       reject(error);
     }
@@ -591,6 +637,7 @@ let apiGetUserByID = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       let user = await db.User.findOne({
+        attributes : ["userID", "email", "name", "phone", "dateOfBirth", "gender"],
         where: { userID: id },
       });
       resolve(user);
@@ -672,6 +719,22 @@ let apiGetTicketByID = (id) => {
       });
       resolve(ticket);
     } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+let apiCheckAccountByEmailPassword = (email, password) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let acocunt = await db.Account.findOne({
+        attributes: ["userID"],
+        where: { email: email , password : password},
+      });
+      let user = await apiGetUserByID(acocunt.dataValues.userID)
+      resolve({accountContains : true, ...user.dataValues});
+    } catch (error) {
+      resolve({accountContains : false})
       reject(error);
     }
   });
@@ -1670,6 +1733,7 @@ module.exports = {
   apiPostInsertTicket,
   apiPostInsertCombo,
   apiPostInsertFare,
+  apiPostInsertAccount,
 
   // API GET
   apiGetListCinema,
@@ -1678,6 +1742,7 @@ module.exports = {
   apiGetSeatsChosen,
   apiGetCombos,
   apiGetUserID,
+  apiGetAccountID,
   apiGetMovieID,
   apiGetCinemaID,
   apiGetMovieDateID,
@@ -1713,6 +1778,7 @@ module.exports = {
   apiGetDetailInfoTicket,
   apiGetShowTimeMovie,
   apiGetPricesOfFare,
+  apiCheckAccountByEmailPassword,
   // API PUT
   apiPutUpdateUser,
   apiPutUpdateMovie,

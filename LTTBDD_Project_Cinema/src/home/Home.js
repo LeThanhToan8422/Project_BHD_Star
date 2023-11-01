@@ -4,6 +4,8 @@ import SlideMovie from './SlideMovie'
 import Event from './Event'
 
 const Home = ({navigation}) => {
+
+
   return (
     <ImageBackground source={require('../../assets/imgBackground/sky-star.jpg')} 
     style={{width : '100%', height : '100%'}}>
