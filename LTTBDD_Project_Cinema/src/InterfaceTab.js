@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./home/Home";
-import ShowTime from "./login/Login";
 import Personal from "./personal/Personal";
 
 
@@ -12,10 +11,6 @@ const Tab = createBottomTabNavigator();
 
 const InterfaceTab = ({route, navigation}) => {
   const [user, setUser] = useState(route.params.user)
-
-  // useEffect(() => {
-  //   setUser(route.params.user);
-  // }, [JSON.stringify(route.params.user)])
 
   return (
     <SafeAreaProvider style={styles.container}>

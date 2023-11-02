@@ -26,7 +26,6 @@ const FormChangePassword = ({ route, navigation }) => {
         id : route.params.userID
       }
     );
-    console.log(data.data.account);
     if (data.data.account.password === password) {
       if(newPassword === againNewPassword){
         let dataPut = await axios.put(

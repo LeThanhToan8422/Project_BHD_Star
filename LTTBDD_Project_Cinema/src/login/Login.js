@@ -4,8 +4,8 @@ import axios from 'axios'
 import Toast from 'react-native-toast-message'
 
 const Login = ({navigation}) => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("min@gmail.com")
+  const [password, setPassword] = useState("Min28062812")
 
   let handlePressLogin = async() => {
     let data = await axios.post("http://10.0.2.2:8080/api/account/check-account-by-email-password", {

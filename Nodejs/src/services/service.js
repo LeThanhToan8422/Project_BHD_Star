@@ -561,7 +561,7 @@ let apiGetTicketOrderedByUserID= (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       let ticketOrdered = await sequelize.query(
-        `SELECT t.seats, t.combos, t.totalPrices, m.nameVN, c.name, md.date, s.time FROM tickets AS t
+        `SELECT m.movieID, t.seats, t.combos, t.totalPrices, m.nameVN, c.name, md.date, s.time FROM tickets AS t
         INNER JOIN movies AS m ON t.movieID = m.movieID
         INNER JOIN cinemas AS c ON t.cinemaID = c.cinemaID
         INNER JOIN moviedates AS md ON t.movieDateID = md.movieDateID

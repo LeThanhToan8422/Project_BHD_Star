@@ -159,6 +159,7 @@ const BookingMovie = ({ navigation, route }) => {
         <View style={{ width: "100%", height: 200 }}>
           <Image
             source={imageMovie.src}
+            resizeMode="stretch"
             style={{ width: "100%", height: "100%" }}
           />
         </View>
