@@ -8,6 +8,16 @@
 ![image](https://github.com/LeThanhToan8422/Project_BHD_Star/assets/144576370/9dbb95f0-16c5-404d-becc-539a70f2b3a0)
 ## Seats : 
 ![image](https://github.com/LeThanhToan8422/Project_BHD_Star/assets/144576370/7f2a8785-4d9a-4cca-b560-2c831019b630)
+## Concession :
+![image](https://github.com/LeThanhToan8422/Project_BHD_Star/assets/144576370/ce33dcb9-c33c-43b2-b56c-eaf7b03c195e)
+## Payments : 
+![image](https://github.com/LeThanhToan8422/Project_BHD_Star/assets/144576370/e48e9b24-0d39-40f6-96ce-6d76acac9ca2)
+## Information :
+![image](https://github.com/LeThanhToan8422/Project_BHD_Star/assets/144576370/218af74d-204c-4d99-a92a-58a6144a6492)
+## Booking History :
+![image](https://github.com/LeThanhToan8422/Project_BHD_Star/assets/144576370/748c62a7-fc71-4f72-b1eb-80af5eb2f515)
+## Ticket Detail :
+![image](https://github.com/LeThanhToan8422/Project_BHD_Star/assets/144576370/ace6a41d-b10c-4b83-8df8-9d580a07d80c)
 
 
 
